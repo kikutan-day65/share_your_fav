@@ -8,3 +8,4 @@ from .forms import CustomAuthenticationForm
 class MyLoginView(LoginView):
     form_class = CustomAuthenticationForm
     template_name = "registration/login.html"
+    next_page = "home:home"
