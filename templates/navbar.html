@@ -23,12 +23,13 @@
                         aria-expanded="false">
                         {{ user.username }}
                     </a>
-                    <form action="{% url 'accounts:logout' %}" method="post">
-                        {% csrf_token %}
-                        <ul class="dropdown-menu">
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <form action="{% url 'accounts:logout' %}" method="post">
+                            {% csrf_token %}
                             <li><button type="submit" class="dropdown-item">Logout</button></li>
-                        </ul>
-                    </form>
+                        </form>
+                    </ul>
                 </li>
                 {% else %}
                 <li class="nav-item dropdown">
