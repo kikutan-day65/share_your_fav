@@ -89,6 +89,17 @@ DATABASES = {
 }
 
 
+# Custom User Model
+# Enable to use custom user model
+AUTH_USER_MODEL = "accounts.CustomUser"
+
+# Custom Backend
+# Enable to login with username or email
+AUTHENTICATION_BACKENDS = [
+    "accounts.auth_backends.UsernameOrEmailBackend",
+]
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
