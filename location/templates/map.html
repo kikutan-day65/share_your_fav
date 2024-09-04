@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>This page shows a map</h1>
+<div id="map"></div>
+
+<script src="{% static 'location/js/map.js' %}"></script>
+
+{% endblock content %}
