@@ -30,6 +30,9 @@ class LeafletMap {
             this.currentPin = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(
                 this.map
             );
+
+            // The zoom level can be set using the 2nd argument
+            this.map.setView([e.latlng.lat, e.latlng.lng]);
         });
     }
 }
