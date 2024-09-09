@@ -48,3 +48,9 @@ class LeafletMap {
 
 var mapInstance = new LeafletMap("map", 35.4437, 139.638, 13);
 mapInstance.initializeMap();
+
+function closeSidebar() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("map").style.marginLeft = "0";
+    document.getElementById("map").style.width = "100%";
+}
