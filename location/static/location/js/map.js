@@ -31,9 +31,18 @@ class LeafletMap {
                 this.map
             );
 
+            this.showSidebar();
+            this.map.invalidateSize();
+
             // The zoom level can be set using the 2nd argument
             this.map.setView([e.latlng.lat, e.latlng.lng]);
         });
+    }
+
+    showSidebar() {
+        document.getElementById("mySidebar").style.width = "30%";
+        document.getElementById("map").style.marginLeft = "30%";
+        document.getElementById("map").style.width = "70%";
     }
 }
 
