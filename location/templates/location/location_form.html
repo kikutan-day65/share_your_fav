@@ -1,0 +1,12 @@
+{% if user.is_authenticated %}
+<form id="" method="post" action="{% url 'map:location_form' %}">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.as_p }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% else %}
+<a href="{% url 'accounts:login' %}">Login</a>
+<a href="{% url 'accounts:signup' %}">Sign up</a>
+{% endif %}
