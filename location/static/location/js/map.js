@@ -31,7 +31,7 @@ class LeafletMap {
                 this.map
             );
 
-            this.showSidebar();
+            this.showSidebar(e.latlng.lat, e.latlng.lng);
             this.map.invalidateSize();
 
             // The zoom level can be set using the 2nd argument
@@ -39,10 +39,26 @@ class LeafletMap {
         });
     }
 
-    showSidebar() {
-        document.getElementById("mySidebar").style.width = "30%";
-        document.getElementById("map").style.marginLeft = "30%";
-        document.getElementById("map").style.width = "70%";
+    showSidebar(latitude, longitude) {
+        document.getElementById("mySidebar").style.width = "40%";
+        document.getElementById("map").style.marginLeft = "40%";
+        document.getElementById("map").style.width = "60%";
+
+        fetch("location-form/")
+            .then((response) => response.text())
+            .then((html) => {
+                document.getElementById("sidebarContent").innerHTML = html;
+
+                console.log(document.getElementById("id_latitude")); // 要素が表示されるか確認
+                console.log(document.getElementById("id_longitude")); // 要素が表示されるか確認
+
+                document.getElementById("id_latitude").value = latitude;
+                document.getElementById("id_longitude").value = longitude;
+                g;
+            })
+            .catch((error) => {
+                console.log("Error loading the form:", error);
+            });
     }
 }
 
