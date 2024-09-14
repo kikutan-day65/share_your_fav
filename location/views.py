@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic.edit import CreateView
 
 from .forms import LocationForm
+from .models import Location
 
 
 # Create your views here.
@@ -10,14 +13,12 @@ class Map(View):
         return render(request, "location/map.html")
 
 
-class LocationFormView(View):
-    def get(self, request):
-        form = LocationForm()
-        context = {"form": form}
-        return render(request, "location/location_form.html", context)
+class LocationFormView(CreateView):
+    model = Location
+    form_class = LocationForm
+    template_name = "location/location_form.html"
+    success_url = reverse_lazy("map:map")
 
-    def post(self, request):
-        form = LocationForm(request.POST)
-        if not form.is_valid():
-            context = {"form": form}
-            return render(request, "location/location_form.html", context)
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
