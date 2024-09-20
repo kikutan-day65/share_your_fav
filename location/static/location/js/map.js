@@ -70,3 +70,17 @@ function closeSidebar() {
     document.getElementById("map").style.marginLeft = "0";
     document.getElementById("map").style.width = "100%";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const locationData = JSON.parse(
+        document.getElementById("locations-data").textContent
+    );
+
+    console.log(locationData);
+
+    locationData.forEach((location) => {
+        console.log(location.name);
+        console.log(location.latitude);
+        console.log(location.longitude);
+    });
+});
