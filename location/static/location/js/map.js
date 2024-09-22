@@ -62,25 +62,4 @@ class LeafletMap {
     }
 }
 
-var mapInstance = new LeafletMap("map", 35.4437, 139.638, 13);
-mapInstance.initializeMap();
-
-function closeSidebar() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("map").style.marginLeft = "0";
-    document.getElementById("map").style.width = "100%";
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    const locationData = JSON.parse(
-        document.getElementById("locations-data").textContent
-    );
-
-    console.log(locationData);
-
-    locationData.forEach((location) => {
-        console.log(location.name);
-        console.log(location.latitude);
-        console.log(location.longitude);
-    });
-});
+export default LeafletMap;
