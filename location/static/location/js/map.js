@@ -60,6 +60,12 @@ class LeafletMap {
                 console.log("Error loading the form:", error);
             });
     }
+
+    closeSidebar() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("map").style.marginLeft = "0";
+        document.getElementById("map").style.width = "100%";
+    }
 }
 
 export default LeafletMap;
