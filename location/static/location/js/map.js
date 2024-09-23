@@ -8,7 +8,7 @@ class LeafletMap {
         this.currentPin = null;
     }
 
-    initializeMap() {
+    initializeMap(locationsData) {
         this.map = L.map(this.elementId, {
             center: [this.latitude, this.longitude],
             zoom: this.zoom,
@@ -18,7 +18,18 @@ class LeafletMap {
             attribution: "&copy; OpenStreetMap contributors",
         }).addTo(this.map);
 
+        this.loadPinFromData(locationsData);
+
         this.dropPin();
+    }
+
+    loadPinFromData(locationsData) {
+        locationsData.forEach((location) => {
+            const marker = new L.marker([
+                location.latitude,
+                location.longitude,
+            ]).addTo(this.map);
+        });
     }
 
     dropPin() {
