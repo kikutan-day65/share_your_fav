@@ -1,28 +1,15 @@
 import LeafletMap from "./map.js";
 
+const locationsData = JSON.parse(
+    document.getElementById("locations-data").textContent
+);
+
+// console.log(locationsData);
 
 var mapInstance = new LeafletMap("map", 35.4437, 139.638, 13);
-mapInstance.initializeMap();
+mapInstance.initializeMap(locationsData);
 
-function closeSidebar() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("map").style.marginLeft = "0";
-    document.getElementById("map").style.width = "100%";
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    // location-dataのJSONを取得してパース
-    const locationData = JSON.parse(
-        document.getElementById("locations-data").textContent
-    );
-
-    // パースしたデータをコンソールに表示
-    console.log(locationData);
-
-    // 各locationにアクセス (例: 最初のlocationのname)
-    locationData.forEach((location) => {
-        console.log(location.name); // 各locationのname
-        console.log(location.latitude); // 各locationのlatitude
-        console.log(location.longitude); // 各locationのlongitude
-    });
+// Call the closeSidebar function when x button is clicked in the sidebar
+document.getElementById("closeSidebarButton").addEventListener("click", () => {
+    mapInstance.closeSidebar();
 });
