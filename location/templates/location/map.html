@@ -2,14 +2,16 @@
 {% load static %}
 
 {% block content %}
+
+<!-- This sidebar shows up when pin is dropped -->
 <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
+    <a href="javascript:void(0)" class="closebtn" id="closeSidebarButton">&times;</a>
     <div id="sidebarContent"></div>
 </div>
 
 <div id="map"></div>
 
-<script type="module" src="{% static 'location/js/main.js' %}"></script>
+<script type="module" src="{% static 'location/js/main.js' %}" defer></script>
 {{ locations|json_script:"locations-data" }}
 
 {% endblock content %}
