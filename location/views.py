@@ -9,8 +9,24 @@ from .models import Location
 
 # Create your views here.
 class Map(View):
+    template_name = "location/map.html"
+
     def get(self, request):
-        return render(request, "location/map.html")
+        locations = list(
+            Location.objects.values(
+                "id",
+                "name",
+                "latitude",
+                "longitude",
+                "description",
+                "like_count",
+                "dislike_count",
+                "created_at",
+                "updated_at",
+            )
+        )
+        context = {"locations": locations}
+        return render(request, self.template_name, context)
 
 
 class LocationFormView(CreateView):
