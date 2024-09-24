@@ -4,9 +4,11 @@ const locationsData = JSON.parse(
     document.getElementById("locations-data").textContent
 );
 
-// console.log(locationsData);
+const locationDataUrl = JSON.parse(
+    document.getElementById("data-url").textContent
+);
 
-var mapInstance = new LeafletMap("map", 35.4437, 139.638, 13);
+var mapInstance = new LeafletMap("map", 35.4437, 139.638, 13, locationDataUrl);
 mapInstance.initializeMap(locationsData);
 
 // Call the closeSidebar function when x button is clicked in the sidebar
