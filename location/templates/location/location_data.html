@@ -1,12 +1,32 @@
 <div class="location-data">
-    <ul>
-        <h1>{{ location.id }}: {{ location.name }}</h1>
-        <li>Latitude: {{ location.latitude }}</li>
-        <li>Longitude: {{ location.longitude }}</li>
-        <li>Description: {{ location.description }}</li>
-        <li>Likes: {{ location.like_count }}</li>
-        <li>Dislikes: {{ location.dislike_count }}</li>
-        <li>Created At: {{ location.created_at }}</li>
-        <li>Updated At: {{ location.updated_at }}</li>
-    </ul>
+    <div class="main-photo">
+        <button>
+            <img src="" alt="No main photo">
+        </button>
+    </div>
+    <hr>
+    <div class="location-name">
+        <h2>{{ location.name }}</h2>
+    </div>
+    <hr>
+    <div class="like-dislike">
+        <div class="like">Like: {{ location.like_count }}</div>
+        <div class="dislike">Dislike: {{ location.dislike_count }}</div>
+    </div>
+    <hr>
+    <div class="description">
+        {{ location.description }}
+    </div>
+    <hr>
+    <div class="location-info">
+        <div class="address">
+            ここには住所が入る予定。location.latitudeとlocation.longitudeから出せるはず
+        </div>
+        <div class="created">
+            Created by {{ location.user }} on {{ location.created_at }}
+        </div>
+        <div class="updated">
+            Last updated by {{ location.user }} on {{ location.created_at }}
+        </div>
+    </div>
 </div>
