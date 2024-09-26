@@ -77,6 +77,12 @@ class LeafletMap {
 
         document.getElementById("sidebarContent").innerHTML = html;
     }
+
+    closeSidebar() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("map").style.marginLeft = "0";
+        document.getElementById("map").style.width = "100%";
+    }
 }
 
 export default LeafletMap;
