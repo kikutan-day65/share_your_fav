@@ -1,10 +1,10 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic.edit import CreateView
 
 from .forms import LocationForm
-from .models import Location
+from .models import Like, Location
 
 
 class Map(View):
@@ -18,8 +18,6 @@ class Map(View):
                 "latitude",
                 "longitude",
                 "description",
-                "like_count",
-                "dislike_count",
                 "created_at",
                 "updated_at",
             )
