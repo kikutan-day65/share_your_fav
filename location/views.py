@@ -37,8 +37,17 @@ class LocationDataView(View):
 
     def get(self, request, pk):
         location = get_object_or_404(Location, pk=pk)
+        likes_count = location.like_set.count()
+        user_liked = False
+        if request.user.is_authenticated:
+            user_liked = Like.objects.filter(
+                user=request.user, location=location
+            ).exists()
+
         context = {
             "location": location,
+            "likes_count": likes_count,
+            "user_liked": user_liked,
         }
         return render(request, self.template_name, context)
 
