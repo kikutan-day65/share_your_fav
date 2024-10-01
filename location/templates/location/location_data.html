@@ -9,9 +9,18 @@
         <h2>{{ location.name }}</h2>
     </div>
     <hr>
-    <div class="like-dislike">
-        <div class="like">Like: {{ location.like_count }}</div>
-        <div class="dislike">Dislike: {{ location.dislike_count }}</div>
+    <div class="likes">
+        <h4 class="likes_count">{{ likes_count }}</h4>
+        <form method="post" action="{% url 'map:like' location.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn {% if user_liked %}btn-danger{% else %}btn-primary{% endif %}">
+                {% if user_liked %}
+                Unlike
+                {% else %}
+                Like
+                {% endif %}
+            </button>
+        </form>
     </div>
     <hr>
     <div class="description">
