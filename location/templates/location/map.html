@@ -13,5 +13,6 @@
 
 <script type="module" src="{% static 'location/js/main.js' %}" defer></script>
 {{ locations|json_script:"locations-data" }}
+{{ data_url|json_script:"data-url" }}
 
 {% endblock content %}

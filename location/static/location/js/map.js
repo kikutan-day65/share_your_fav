@@ -1,11 +1,12 @@
 class LeafletMap {
-    constructor(elementId, latitude, longitude, zoom) {
+    constructor(elementId, latitude, longitude, zoom, locationDataUrl) {
         this.elementId = elementId;
         this.latitude = latitude;
         this.longitude = longitude;
         this.zoom = zoom;
         this.map = null;
         this.currentPin = null;
+        this.baseUrl = locationDataUrl;
     }
 
     initializeMap(locationsData) {
@@ -29,6 +30,25 @@ class LeafletMap {
                 location.latitude,
                 location.longitude,
             ]).addTo(this.map);
+
+            marker.on("click", () => {
+                console.log("marker is clicked!");
+
+                const locationDataUrl = this.baseUrl.replace("0", location.id);
+
+                //クリックしたらlocationの詳細を表示
+                $.ajax({
+                    url: locationDataUrl,
+                    type: "GET",
+                    dataType: "html",
+                    success: (html) => {
+                        this.showSidebar(html);
+                    },
+                    error: (xhr, status, error) => {
+                        console.error("Error loading location data:", error);
+                    },
+                });
+            });
         });
     }
 
@@ -50,26 +70,12 @@ class LeafletMap {
         });
     }
 
-    showSidebar(latitude, longitude) {
+    showSidebar(html) {
         document.getElementById("mySidebar").style.width = "40%";
         document.getElementById("map").style.marginLeft = "40%";
         document.getElementById("map").style.width = "60%";
 
-        fetch("location-form/")
-            .then((response) => response.text())
-            .then((html) => {
-                document.getElementById("sidebarContent").innerHTML = html;
-
-                console.log(document.getElementById("id_latitude")); // 要素が表示されるか確認
-                console.log(document.getElementById("id_longitude")); // 要素が表示されるか確認
-
-                document.getElementById("id_latitude").value = latitude;
-                document.getElementById("id_longitude").value = longitude;
-                g;
-            })
-            .catch((error) => {
-                console.log("Error loading the form:", error);
-            });
+        document.getElementById("sidebarContent").innerHTML = html;
     }
 
     closeSidebar() {

@@ -1,0 +1,41 @@
+<div class="location-data">
+    <div class="main-photo">
+        <button>
+            <img src="" alt="No main photo">
+        </button>
+    </div>
+    <hr>
+    <div class="location-name">
+        <h2>{{ location.name }}</h2>
+    </div>
+    <hr>
+    <div class="likes">
+        <h4 class="likes_count">{{ likes_count }}</h4>
+        <form method="post" action="{% url 'map:like' location.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn {% if user_liked %}btn-danger{% else %}btn-primary{% endif %}">
+                {% if user_liked %}
+                Unlike
+                {% else %}
+                Like
+                {% endif %}
+            </button>
+        </form>
+    </div>
+    <hr>
+    <div class="description">
+        {{ location.description }}
+    </div>
+    <hr>
+    <div class="location-info">
+        <div class="address">
+            ここには住所が入る予定。location.latitudeとlocation.longitudeから出せるはず
+        </div>
+        <div class="created">
+            Created by {{ location.user }} on {{ location.created_at }}
+        </div>
+        <div class="updated">
+            Last updated by {{ location.user }} on {{ location.created_at }}
+        </div>
+    </div>
+</div>
