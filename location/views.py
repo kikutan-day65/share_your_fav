@@ -52,3 +52,20 @@ class LocationFormView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class LikeView(View):
+    def post(self, request, location_id):
+        location = get_object_or_404(Location, id=location_id)
+        user = request.user
+
+        # Check if the user has already liked
+        like, created = Like.objects.get_or_create(user=user, location=location)
+
+        if not created:
+            like.delete()
+            print(f"{user.username} unliked {location.name}.")
+        else:
+            print(f"{user.username} liked {location.name}.")
+
+        return redirect("map:map")
