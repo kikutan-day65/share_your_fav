@@ -42,9 +42,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts.apps.AccountsConfig",
-    "home.apps.HomeConfig",
-    "location.apps.LocationConfig",
 ]
 
 MIDDLEWARE = [
@@ -89,18 +86,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
-
-# Custom User Model
-# Enable to use custom user model
-AUTH_USER_MODEL = "accounts.CustomUser"
-
-# Custom Backend
-# Enable to login with username or email
-AUTHENTICATION_BACKENDS = [
-    "accounts.auth_backends.UsernameOrEmailBackend",
-]
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
