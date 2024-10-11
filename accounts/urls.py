@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import UserRegisterView
+from .views import UserDetailView, UserRegiserSuccesView, UserRegisterView
 
 app_name = "accounts"
 urlpatterns = [
@@ -10,4 +10,10 @@ urlpatterns = [
         UserRegisterView.as_view(),
         name="user_register_form.html",
     ),
+    path("user-detail/<int:pk>/", UserDetailView.as_view(), name="user_detail"),
+    # path(
+    #     "user-register-success/",
+    #     UserRegiserSuccesView.as_view(),
+    #     name="user_register_success",
+    # ),
 ]
