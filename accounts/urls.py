@@ -8,12 +8,12 @@ urlpatterns = [
     path(
         "user-register/",
         UserRegisterView.as_view(),
-        name="user_register_form.html",
+        name="user_register",
     ),
     path("user-detail/<int:pk>/", UserDetailView.as_view(), name="user_detail"),
-    # path(
-    #     "user-register-success/",
-    #     UserRegiserSuccesView.as_view(),
-    #     name="user_register_success",
-    # ),
+    path(
+        "user-register-success/",
+        UserRegiserSuccesView.as_view(),
+        name="user_register_success",
+    ),
 ]
