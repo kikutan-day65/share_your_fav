@@ -9,6 +9,11 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class CustomUserRegisterForm(forms.ModelForm):
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+    confirm_password = forms.CharField(
+        label="Confirm password", widget=forms.PasswordInput
+    )
+
     class Meta:
         model = CustomUser
-        fields = ["username", "email", "first_name", "last_name", "password"]
+        fields = ["username", "email", "first_name", "last_name"]
