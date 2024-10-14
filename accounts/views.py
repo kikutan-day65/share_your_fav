@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -15,11 +16,11 @@ class UserRegisterView(CreateView):
     success_url = reverse_lazy("accounts:user_register_success")
 
 
-class UserRegiserSuccesView(TemplateView):
+class UserRegiserSuccesView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/user_register_success.html"
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "accounts/user_detail.html"
     context_object_name = "user_detail"
@@ -34,6 +35,6 @@ class UserLoginView(LoginView):
         return reverse("accounts:user_detail", kwargs={"pk": user_id})
 
 
-class UserLogoutView(LogoutView):
+class UserLogoutView(LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy("accounts:user_logout")
     template_name = "accounts/user_logout.html"
