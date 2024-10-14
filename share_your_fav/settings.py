@@ -138,3 +138,5 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 AUTHENTICATION_BACKENDS = [
     "accounts.auth_backends.UsernameOrEmailBackend",
 ]
+
+LOGIN_URL = "accounts:user_login"
