@@ -1,5 +1,6 @@
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, TemplateView
 
 from .forms import CustomAuthenticationForm, CustomUserRegisterForm
@@ -22,3 +23,12 @@ class UserDetailView(DetailView):
     model = CustomUser
     template_name = "accounts/user_detail.html"
     context_object_name = "user_detail"
+
+
+class UserLoginView(LoginView):
+    authentication_form = CustomAuthenticationForm
+    template_name = "accounts/user_login.html"
+
+    def get_success_url(self):
+        user_id = self.request.user.id
+        return reverse("accounts:user_detail", kwargs={"pk": user_id})
