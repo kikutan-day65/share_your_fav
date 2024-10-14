@@ -1,0 +1,8 @@
+{% block content %}
+<form action="{% url 'accounts:user_login' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <table>{{ form.as_table }}</table>
+    <p><input type="submit" value="送信"></p>
+</form>
+{% endblock content %}
