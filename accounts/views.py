@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, TemplateView
@@ -32,3 +32,8 @@ class UserLoginView(LoginView):
     def get_success_url(self):
         user_id = self.request.user.id
         return reverse("accounts:user_detail", kwargs={"pk": user_id})
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy("accounts:user_logout")
+    template_name = "accounts/user_logout.html"
