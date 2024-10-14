@@ -11,7 +11,11 @@ class UserRegisterView(CreateView):
     model = CustomUser
     form_class = CustomUserRegisterForm
     template_name = "accounts/user_register_form.html"
-    success_url = reverse_lazy("accounts:register_success_page")
+    success_url = reverse_lazy("accounts:user_register_success")
+
+
+class UserRegiserSuccesView(TemplateView):
+    template_name = "accounts/user_register_success.html"
 
 
 class UserDetailView(DetailView):
