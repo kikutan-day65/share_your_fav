@@ -1,3 +1,5 @@
 from django.urls import path
 
-urlpatterns = []
+from .views import MapView
+
+urlpatterns = [path("map/", MapView.as_view(), name="map")]
