@@ -6,7 +6,7 @@ class MapManager {
         );
     }
 
-    InitializeMap() {
+    initializeMap() {
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 19,
             attribution:
@@ -15,7 +15,9 @@ class MapManager {
     }
 }
 
-// // Locationオブジェクトのためのクラス
-// class LocationManager {
-//     constructor(latitude, longitude) {}
-// }
+// Locationオブジェクトのためのクラス
+class LocationManager {
+    constructor(latitude, longitude) {}
+}
+
+export { MapManager, LocationManager };
