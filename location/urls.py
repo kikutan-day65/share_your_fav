@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import LocationCreateView, MapView
+from .views import LocationCreateView, LocationDetailView, MapView
 
 app_name = "location"
 urlpatterns = [
@@ -9,5 +9,10 @@ urlpatterns = [
         "location-create-form/",
         LocationCreateView.as_view(),
         name="location_create_form",
+    ),
+    path(
+        "location-detail/<int:pk>/",
+        LocationDetailView.as_view(),
+        name="location_detail",
     ),
 ]
