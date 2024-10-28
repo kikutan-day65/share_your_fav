@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% block content %}
 <form action="{% url 'location:location_create_form' %}" method="POST">
     {% csrf_token %}
