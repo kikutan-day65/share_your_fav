@@ -4,7 +4,7 @@
 
 {% if location.user == request.user %}
 <p>
-    <a class="link-opacity-10" href="#">Update</a>
+    <a class="link-opacity-10" href="{% url 'location:location_update_form' location.id %}">Update</a>
 </p>
 <p>
     <a class="link-opacity-10" href="#">Delete</a>
