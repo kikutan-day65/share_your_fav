@@ -1,6 +1,12 @@
 from django.urls import path
 
-from .views import LocationCreateView, LocationDetailView, LocationUpdateView, MapView
+from .views import (
+    LocationCreateView,
+    LocationDeleteView,
+    LocationDetailView,
+    LocationUpdateView,
+    MapView,
+)
 
 app_name = "location"
 urlpatterns = [
@@ -19,5 +25,10 @@ urlpatterns = [
         "location-update-form/<int:pk>/",
         LocationUpdateView.as_view(),
         name="location_update_form",
+    ),
+    path(
+        "location-delete/<int:pk>/",
+        LocationDeleteView.as_view(),
+        name="location_delete",
     ),
 ]
