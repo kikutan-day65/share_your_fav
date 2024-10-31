@@ -7,7 +7,7 @@
     <a class="link-opacity-10" href="{% url 'location:location_update_form' location.id %}">Update</a>
 </p>
 <p>
-    <a class="link-opacity-10" href="#">Delete</a>
+    <a class="link-opacity-10" href="{% url 'location:location_delete' object.id %}">Delete</a>
 </p>
 {% endif %}
 {{ location.name }}
