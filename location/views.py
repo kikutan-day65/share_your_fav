@@ -1,7 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, TemplateView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    TemplateView,
+    UpdateView,
+)
 
 from .forms import LocationForm
 from .models import Location
@@ -34,3 +40,9 @@ class LocationUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("location:location_detail", kwargs={"pk": self.object.pk})
+
+
+class LocationDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = "delete_confirmation.html"
+    model = Location
+    success_url = reverse_lazy("location:map")
