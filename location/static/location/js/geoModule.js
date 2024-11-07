@@ -13,11 +13,25 @@ class MapManager {
                 '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(this.map);
     }
+
+    addMarkers(locations) {
+        locations.forEach((location) => {
+            L.marker([location.fields.latitude, location.fields.longitude])
+                .addTo(this.map)
+                .bindPopup(location.fields.name);
+        });
+    }
 }
 
 // Locationオブジェクトのためのクラス
 class LocationManager {
-    constructor(latitude, longitude) {}
+    constructor(locationsData) {
+        this.locations = JSON.parse(locationsData);
+    }
+
+    getLocations() {
+        return this.locations;
+    }
 }
 
 export { MapManager, LocationManager };
