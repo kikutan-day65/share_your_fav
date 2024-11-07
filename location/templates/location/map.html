@@ -3,4 +3,12 @@
 {% block content%}
 <div id="map"></div>
 <script type="module" src="{% static 'location/js/main.js' %}"></script>
+<script type="module" src="{% static 'location/js/main.js' %}" defer></script>
+{{ locations_json|json_script:"locations-data" }}
+
+<ul>
+    {% for location in locations %}
+    <li>{{ location.name}}: {{ location.description }}</li>
+    {% endfor %}
+</ul>
 {% endblock content%}
