@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -16,6 +17,14 @@ from .models import Location
 # Create your views here.
 class MapView(TemplateView):
     template_name = "location/map.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["locations_json"] = serializers.serialize(
+            "json", Location.objects.all()
+        )
+        context["locations"] = Location.objects.all()
+        return context
 
 
 class LocationCreateView(LoginRequiredMixin, CreateView):
