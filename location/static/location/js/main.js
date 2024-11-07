@@ -7,12 +7,6 @@ mapController.initializeMap();
 const locationsDataString = JSON.parse(
     document.getElementById("locations-data").textContent
 );
+const locationManager = new LocationManager(locationsDataString);
 
-const locationsData = JSON.parse(locationsDataString);
-
-// ループして.nameにアクセスする例
-locationsData.forEach((location) => {
-    console.log(location.fields.name); // nameを出力
-});
-
-// const locationsObj = new LocationManager(locationsData);
+mapController.addMarkers(locationManager.getLocations());
