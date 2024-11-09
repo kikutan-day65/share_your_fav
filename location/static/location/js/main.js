@@ -9,4 +9,6 @@ const locationsDataString = JSON.parse(
 );
 const locationManager = new LocationManager(locationsDataString);
 
-mapController.addMarkers(locationManager.getLocations());
+mapController.showMarkers(locationManager.getLocations());
+
+mapController.addMarkers();
