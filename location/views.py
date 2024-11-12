@@ -1,7 +1,10 @@
+from typing import List
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import URLPattern, get_resolver, reverse, reverse_lazy
+from django.urls.exceptions import NoReverseMatch
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -24,7 +27,22 @@ class MapView(TemplateView):
             "json", Location.objects.all()
         )
         context["locations"] = Location.objects.all()
+
+        # locationアプリのurlオブジェクトを取得
+        app_url = {}
+        url_obj = self.get_patterns("location")
+        urlpatterns = url_obj.urlpatterns
+        for url_pattern in urlpatterns:
+            if hasattr(url_pattern, "name"):
+                app_url[url_pattern.name] = str(url_pattern.pattern)
+        context["location_urls"] = app_url
+
         return context
+
+    def get_patterns(self, app: str) -> List[URLPattern]:
+        for pattern in get_resolver().url_patterns:
+            if getattr(pattern, "app_name", "") == app:
+                return pattern.urlconf_name
 
 
 class LocationCreateView(LoginRequiredMixin, CreateView):
