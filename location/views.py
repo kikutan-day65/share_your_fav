@@ -50,6 +50,17 @@ class LocationCreateView(LoginRequiredMixin, CreateView):
     template_name = "location/location_create_form.html"
     success_url = reverse_lazy("location:map")
 
+    def get_initial(self):
+        initial = super().get_initial()
+        lat = self.request.GET.get("lat")
+        lng = self.request.GET.get("lng")
+
+        if lat and lng:
+            initial["latitude"] = lat
+            initial["longitude"] = lng
+
+        return initial
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
