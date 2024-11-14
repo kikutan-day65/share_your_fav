@@ -23,7 +23,7 @@ class MapManager {
         });
     }
 
-    addMarkers() {
+    addMarkers(locationUrls) {
         this.map.on("click", (event) => {
             const { lat, lng } = event.latlng;
 
@@ -31,10 +31,20 @@ class MapManager {
                 this.map.removeLayer(this.currentMarker);
             }
 
+            // 一時的にマーカをマップに落とす
             this.currentMarker = L.marker([lat, lng]).addTo(this.map);
-            this.currentMarker
-                .bindPopup(`Latitude: ${lat}, Longitude: ${lng}`)
-                .openPopup();
+
+            // ポップアップの内容作成
+            let popupContent = `Latitude: ${lat}, Longitude: ${lng}`;
+
+            if (locationUrls && locationUrls.location_create_form) {
+                const createFormUrl = locationUrls.location_create_form;
+                console.log(createFormUrl);
+                popupContent += `<br><a href="/location/${createFormUrl}">Create New Location</a>`;
+            }
+
+            // ポップアップの表示
+            this.currentMarker.bindPopup(popupContent).openPopup();
         });
     }
 }
