@@ -4,7 +4,9 @@
 <div id="map"></div>
 <script type="module" src="{% static 'location/js/main.js' %}"></script>
 <script type="module" src="{% static 'location/js/main.js' %}" defer></script>
+
 {{ locations_json|json_script:"locations-data" }}
+{{ location_urls|json_script:"location-urls" }}
 
 <ul>
     {% for location in locations %}

@@ -13,7 +13,6 @@ const locationManager = new LocationManager(locationsDataString);
 const locationUrls = JSON.parse(
     document.getElementById("location-urls").textContent
 );
-// console.log(locationUrls);
 
 mapController.showMarkers(locationManager.getLocations());
 
