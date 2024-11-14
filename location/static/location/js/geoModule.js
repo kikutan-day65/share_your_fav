@@ -39,8 +39,8 @@ class MapManager {
 
             if (locationUrls && locationUrls.location_create_form) {
                 const createFormUrl = locationUrls.location_create_form;
-                console.log(createFormUrl);
-                popupContent += `<br><a href="/location/${createFormUrl}">Create New Location</a>`;
+                const fullUrl = `${createFormUrl}?lat=${lat}&lng=${lng}`;
+                popupContent += `<br><a href="/location/${fullUrl}">Create New Location</a>`;
             }
 
             // ポップアップの表示
