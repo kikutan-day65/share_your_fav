@@ -9,6 +9,12 @@ const locationsDataString = JSON.parse(
 );
 const locationManager = new LocationManager(locationsDataString);
 
+// 全URLを取得
+const locationUrls = JSON.parse(
+    document.getElementById("location-urls").textContent
+);
+// console.log(locationUrls);
+
 mapController.showMarkers(locationManager.getLocations());
 
-mapController.addMarkers();
+mapController.addMarkers(locationUrls);
