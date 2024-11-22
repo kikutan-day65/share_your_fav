@@ -53,6 +53,45 @@ class MapManager {
             });
         });
     }
+
+    addMarkers(locationUrls) {
+        this.map.on("click", async (event) => {
+            const { lat, lng } = event.latlng;
+
+            if (this.currentMarker) {
+                this.map.removeLayer(this.currentMarker);
+            }
+
+            // 一時的にマーカーをマップに落とす
+            this.currentMarker = L.marker([lat, lng]).addTo(this.map);
+
+            // フォームの URL を取得
+            const formUrl = `/location/${locationUrls.location_create_form}?lat=${lat}&lng=${lng}`;
+
+            try {
+                // フォームをサーバーから取得
+                const response = await fetch(formUrl);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch form");
+                }
+
+                const formContent = await response.text(); // フォーム HTML をテキストとして取得
+
+                // navbarを削除する
+                const cleanedFormContent = formContent.replace(
+                    /<nav[^>]*>[\s\S]*?<\/nav>/,
+                    ""
+                );
+
+                // ポップアップの内容を更新
+                this.customPopup.setContent(cleanedFormContent); // 取得したフォームをポップアップにセット
+                this.customPopup.addTo(this.map); // カスタムポップアップをマップに追加
+                this.customPopup.show(); // ポップアップを表示
+            } catch (error) {
+                console.error("Error fetching form:", error);
+            }
+        });
+    }
 }
 
 class CustomPopup extends L.Evented {
