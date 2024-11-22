@@ -19,8 +19,7 @@ class MapManager {
     initializeSidebar() {
         this.sidebar = L.control
             .sidebar({ container: "sidebar" })
-            .addTo(this.map)
-            .open("home");
+            .addTo(this.map);
 
         this.sidebar.on("content", (ev) => {
             switch (ev.id) {
