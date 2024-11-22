@@ -6,6 +6,7 @@ class MapManager {
         );
         this.initializeMap();
         this.initializeSidebar();
+        this.initializeCustomPopup();
     }
 
     initializeMap() {
@@ -32,6 +33,14 @@ class MapManager {
         });
     }
 
+    initializeCustomPopup() {
+        this.customPopup = L.control.customPopup("custom-popup", {
+            position: "left",
+            closeButton: true,
+            autopan: true,
+        });
+    }
+
     showMarkers(locations) {
         locations.forEach((location) => {
             const marker = L.marker([
@@ -39,15 +48,9 @@ class MapManager {
                 location.fields.longitude,
             ]).addTo(this.map);
 
-            const customPopup = L.control.customPopup("custom-popup", {
-                position: "left",
-                closeButton: true,
-                autopan: true,
-            });
-
             marker.on("click", () => {
-                customPopup.addTo(this.map);
-                customPopup.show();
+                this.customPopup.addTo(this.map);
+                this.customPopup.show();
             });
         });
     }
