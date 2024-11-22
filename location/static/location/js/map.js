@@ -32,11 +32,17 @@ class MapManager {
         });
     }
 
-    initializeCustomPopup() {
-        this.customPopup = L.control.customPopup("custom-popup", {
-            position: "left",
-            closeButton: true,
-            autopan: true,
+    addMarkers() {
+        let currentMarker = null;
+
+        this.map.on("click", (e) => {
+            const { lat, lng } = e.latlng;
+
+            if (currentMarker) {
+                this.map.removeLayer(currentMarker);
+            }
+
+            currentMarker = new L.marker([lat, lng]).addTo(this.map);
         });
     }
 
