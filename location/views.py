@@ -23,7 +23,7 @@ class MapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["locations_json"] = serializers.serialize(
+        context["locations_data"] = serializers.serialize(
             "json", Location.objects.all()
         )
         context["locations"] = Location.objects.all()
