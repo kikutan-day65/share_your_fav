@@ -1,19 +1,17 @@
-import { MapManager, LocationManager } from "./geoModule.js";
+import { MapManager } from "./map.js";
 
-const mapController = new MapManager("map", 35.466, 139.6221, 13);
-mapController.initializeMap();
+const mapController = new MapManager(35.466, 139.6221, 13);
 
-// locations-dataスクリプトタグからデータを取得
+// locations-dataスクリプトタグからlocationデータを取得
 const locationsDataString = JSON.parse(
     document.getElementById("locations-data").textContent
 );
-const locationManager = new LocationManager(locationsDataString);
 
 // 全URLを取得
 const locationUrls = JSON.parse(
     document.getElementById("location-urls").textContent
 );
-
-mapController.showMarkers(locationManager.getLocations());
+const locationsData = JSON.parse(locationsDataString);
+mapController.showMarkers(locationsData);
 
 mapController.addMarkers(locationUrls);
