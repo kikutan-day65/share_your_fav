@@ -1,3 +1,6 @@
+import createCustomPopupControl from "./map-popup.js";
+const { CustomPopup, custompopup } = createCustomPopupControl();
+
 class MapManager {
     constructor(initLatitude, initLongitude, zoomLevel = 13) {
         this.map = L.map("map").setView(
@@ -6,7 +9,6 @@ class MapManager {
         );
         this.initializeMap();
         this.initializeSidebar();
-        this.initializeCustomPopup();
     }
 
     initializeMap() {
@@ -32,282 +34,120 @@ class MapManager {
         });
     }
 
-    initializeCustomPopup() {
-        this.customPopup = L.control.customPopup("custom-popup", {
-            position: "left",
-            closeButton: true,
-            autopan: true,
+    addMarkers() {
+        let currentMarker = null;
+
+        this.map.on("click", (e) => {
+            const { lat, lng } = e.latlng;
+
+            // 既存のマーカーを削除
+            if (currentMarker) {
+                this.map.removeLayer(currentMarker);
+            }
+
+            // 新しいマーカーを追加
+            currentMarker = new L.marker([lat, lng]).addTo(this.map);
+
+            // カスタムポップアップを作成する関数
+            const showPopup = () => {
+                // 既存のカスタムポップアップを削除
+                if (this.customPopup) {
+                    this.customPopup.removeFrom(this.map);
+                    this.customPopup = null; // ポップアップ参照をクリア
+                }
+
+                // ポップアップ用のHTML要素を生成または再利用
+                const placeholderId = `popup-${Date.now()}`; // 固有IDを生成
+                let placeholder = document.getElementById(placeholderId);
+                if (!placeholder) {
+                    placeholder = document.createElement("div");
+                    placeholder.id = placeholderId;
+                    document.body.appendChild(placeholder);
+                }
+
+                // 新しいカスタムポップアップを作成
+                this.customPopup = custompopup(placeholderId, {
+                    closeButton: true,
+                    position: "left",
+                    autoPan: true,
+                });
+
+                // ポップアップが閉じられた際の処理を追加
+                this.customPopup.on("close", () => {
+                    this.customPopup = null; // ポップアップ参照をクリア
+                });
+
+                // ポップアップに内容を設定
+                this.customPopup.setContent(`
+                    <b>Marker at:</b><br>
+                    Latitude: ${lat}<br>
+                    Longitude: ${lng}
+                `);
+
+                // マップにポップアップを追加して表示
+                this.customPopup.addTo(this.map);
+                this.customPopup.show();
+            };
+
+            // マーカー追加直後にポップアップを表示
+            showPopup();
+
+            // マーカークリック時にもポップアップを表示
+            currentMarker.on("click", () => {
+                if (!this.customPopup) {
+                    showPopup();
+                } else {
+                    this.customPopup.show();
+                }
+            });
         });
     }
 
     showMarkers(locations) {
-        locations.forEach((location) => {
+        for (let i = 0; i < locations.length; i++) {
+            const location = locations[i];
+
+            // マーカーを作成してマップに追加
             const marker = L.marker([
                 location.fields.latitude,
                 location.fields.longitude,
             ]).addTo(this.map);
 
+            // マーカークリック時にカスタムポップアップを作成
             marker.on("click", () => {
+                // 既存のポップアップを削除する場合
+                if (this.customPopup) {
+                    this.customPopup.removeFrom(this.map);
+                }
+
+                // 新しい`placeholder`を動的に作成
+                const placeholderId = `popup-${i}`;
+                let placeholder = document.getElementById(placeholderId);
+                if (!placeholder) {
+                    placeholder = document.createElement("div");
+                    placeholder.id = placeholderId;
+                    document.body.appendChild(placeholder);
+                }
+
+                // 新しいポップアップを作成
+                this.customPopup = custompopup(placeholderId, {
+                    closeButton: true,
+                    position: "left",
+                    autoPan: true,
+                });
+
+                // ポップアップに内容を設定
+                this.customPopup.setContent(`
+                    <b>${location.fields.name}</b><br>
+                    ${location.fields.description}
+                `);
+
+                // ポップアップをマップに追加して表示
                 this.customPopup.addTo(this.map);
                 this.customPopup.show();
             });
-        });
-    }
-
-    addMarkers(locationUrls) {
-        this.map.on("click", async (event) => {
-            const { lat, lng } = event.latlng;
-
-            if (this.currentMarker) {
-                this.map.removeLayer(this.currentMarker);
-            }
-
-            // 一時的にマーカーをマップに落とす
-            this.currentMarker = L.marker([lat, lng]).addTo(this.map);
-
-            // フォームの URL を取得
-            const formUrl = `/location/${locationUrls.location_create_form}?lat=${lat}&lng=${lng}`;
-
-            try {
-                // フォームをサーバーから取得
-                const response = await fetch(formUrl);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch form");
-                }
-
-                const formContent = await response.text(); // フォーム HTML をテキストとして取得
-
-                // navbarを削除する
-                const cleanedFormContent = formContent.replace(
-                    /<nav[^>]*>[\s\S]*?<\/nav>/,
-                    ""
-                );
-
-                // ポップアップの内容を更新
-                this.customPopup.setContent(cleanedFormContent); // 取得したフォームをポップアップにセット
-                this.customPopup.addTo(this.map); // カスタムポップアップをマップに追加
-                this.customPopup.show(); // ポップアップを表示
-            } catch (error) {
-                console.error("Error fetching form:", error);
-            }
-        });
+        }
     }
 }
-
-class CustomPopup extends L.Evented {
-    constructor(div_id, options) {
-        super();
-        L.setOptions(this, options);
-
-        // Find content container
-        var content = (this._contentContainer = L.DomUtil.get(div_id));
-        console.log(div_id);
-
-        // Remove the content container from its original parent
-        if (content.parentNode != undefined) {
-            content.parentNode.removeChild(content);
-        }
-
-        var l = "leaflet-";
-
-        // Create sidebar container
-        // leaflet-customPopup-leftみたいになる
-        var container = (this._container = L.DomUtil.create(
-            "div",
-            l + "customPopup " + this.options.position
-        ));
-
-        // Style and attach content container
-        L.DomUtil.addClass(content, l + "control");
-        container.appendChild(content);
-
-        // Create close button and attach it if configured
-        if (this.options.closeButton) {
-            var close = (this._closeButton = L.DomUtil.create(
-                "a",
-                "close",
-                container
-            ));
-            close.innerHTML = "&times;";
-        }
-    }
-
-    addTo(map) {
-        var container = this._container;
-        var content = this._contentContainer;
-
-        // Attach event to close button
-        if (this.options.closeButton) {
-            var close = this._closeButton;
-
-            L.DomEvent.on(close, "click", this.hide, this);
-        }
-
-        // 'transitionend' イベントリスナーをサイドバーのコンテナに設定
-        // transitionend: CSSの遷移（アニメーション）が終了したときに発火するイベント
-        L.DomEvent.on(
-            container,
-            "transitionend", // アニメーションが終了したときのイベント
-            this._handleTransitionEvent, // アニメーション終了後に呼ばれるメソッド
-            this
-        ).on(
-            container,
-            "webkitTransitionEnd", // webkit系のブラウザ用に遷移終了イベントを設定
-            this._handleTransitionEvent, // 同様にアニメーション終了後に呼ばれるメソッド
-            this
-        );
-
-        // Attach sidebar container to controls container
-        var controlContainer = map._controlContainer;
-        controlContainer.insertBefore(container, controlContainer.firstChild);
-
-        this.map = map;
-
-        // Make sure we don't drag the map when we interact with the content
-        var stop = L.DomEvent.stopPropagation;
-        var fakeStop = L.DomEvent._fakeStop || stop;
-        L.DomEvent.on(content, "contextmenu", stop)
-            .on(content, "click", fakeStop)
-            .on(content, "mousedown", stop)
-            .on(content, "touchstart", stop)
-            .on(content, "dblclick", fakeStop)
-            .on(content, "mousewheel", stop)
-            .on(content, "wheel", stop)
-            .on(content, "scroll", stop)
-            .on(content, "MozMousePixelScroll", stop);
-
-        return this;
-    }
-
-    removeFrom(map) {
-        //if the control is visible, hide it before removing it.
-        this.hide();
-
-        var container = this._container;
-        var content = this._contentContainer;
-
-        // Remove sidebar container from controls container
-        var controlContainer = map._controlContainer;
-        controlContainer.removeChild(container);
-
-        //disassociate the map object
-        this._map = null;
-
-        // Unregister events to prevent memory leak
-        var stop = L.DomEvent.stopPropagation;
-        var fakeStop = L.DomEvent._fakeStop || stop;
-        L.DomEvent.off(content, "contextmenu", stop)
-            .off(content, "click", fakeStop)
-            .off(content, "mousedown", stop)
-            .off(content, "touchstart", stop)
-            .off(content, "dblclick", fakeStop)
-            .off(content, "mousewheel", stop)
-            .off(content, "wheel", stop)
-            .off(content, "scroll", stop)
-            .off(content, "MozMousePixelScroll", stop);
-
-        L.DomEvent.off(
-            container,
-            "transitionend",
-            this._handleTransitionEvent,
-            this
-        ).off(
-            container,
-            "webkitTransitionEnd",
-            this._handleTransitionEvent,
-            this
-        );
-
-        if (this._closeButton && this._close) {
-            var close = this._closeButton;
-
-            L.DomEvent.off(close, "click", this.hide, this);
-        }
-
-        return this;
-    }
-
-    isVisible() {
-        return L.DomUtil.hasClass(this._container, "visible");
-    }
-
-    show() {
-        if (!this.isVisible()) {
-            L.DomUtil.addClass(this._container, "visible");
-            if (this.options.autoPan) {
-                this._map.panBy([-this.getOffset() / 2, 0], {
-                    duration: 0.5,
-                });
-            }
-            this.fire("show");
-        }
-    }
-
-    hide(e) {
-        if (this.isVisible()) {
-            L.DomUtil.removeClass(this._container, "visible");
-            if (this.options.autoPan) {
-                this._map.panBy([this.getOffset() / 2, 0], {
-                    duration: 0.5,
-                });
-            }
-            this.fire("hide");
-        }
-        if (e) {
-            L.DomEvent.stopPropagation(e);
-        }
-    }
-
-    toggle() {
-        if (this.isVisible()) {
-            this.hide();
-        } else {
-            this.show();
-        }
-    }
-
-    getContainer() {
-        return this._contentContainer;
-    }
-
-    getCloseButton() {
-        return this._closeButton;
-    }
-
-    setContent(content) {
-        var container = this.getContainer();
-
-        if (typeof content === "string") {
-            container.innerHTML = content;
-        } else {
-            // clean current content
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
-
-            container.appendChild(content);
-        }
-
-        return this;
-    }
-
-    getOffset() {
-        if (this.options.position === "right") {
-            return -this._container.offsetWidth;
-        } else {
-            return this._container.offsetWidth;
-        }
-    }
-
-    _handleTransitionEvent(e) {
-        if (e.propertyName == "left" || e.propertyName == "right")
-            this.fire(this.isVisible() ? "shown" : "hidden");
-    }
-}
-
-// ファクトリー関数 (CustomPopup インスタンスを作成)
-L.control.customPopup = function (div_id, options) {
-    return new CustomPopup(div_id, options);
-};
 
 export { MapManager };
