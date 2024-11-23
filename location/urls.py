@@ -1,11 +1,34 @@
 from django.urls import path
 
-from .views import LikeView, LocationDataView, LocationFormView, Map
+from .views import (
+    LocationCreateView,
+    LocationDeleteView,
+    LocationDetailView,
+    LocationUpdateView,
+    MapView,
+)
 
-app_name = "map"
+app_name = "location"
 urlpatterns = [
-    path("", Map.as_view(), name="map"),
-    path("location-form/", LocationFormView.as_view(), name="location_form"),
-    path("location-data/<int:pk>/", LocationDataView.as_view(), name="location_data"),
-    path("like/<int:location_id>/", LikeView.as_view(), name="like"),
+    path("map/", MapView.as_view(), name="map"),
+    path(
+        "location-create-form/",
+        LocationCreateView.as_view(),
+        name="location_create_form",
+    ),
+    path(
+        "location-detail/<int:pk>/",
+        LocationDetailView.as_view(),
+        name="location_detail",
+    ),
+    path(
+        "location-update-form/<int:pk>/",
+        LocationUpdateView.as_view(),
+        name="location_update_form",
+    ),
+    path(
+        "location-delete/<int:pk>/",
+        LocationDeleteView.as_view(),
+        name="location_delete",
+    ),
 ]

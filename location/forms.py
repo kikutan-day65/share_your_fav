@@ -6,8 +6,4 @@ from .models import Location
 class LocationForm(forms.ModelForm):
     class Meta:
         model = Location
-        fields = ["name", "description", "latitude", "longitude"]
-        widgets = {
-            "latitude": forms.HiddenInput(),
-            "longitude": forms.HiddenInput(),
-        }
+        fields = ["name", "latitude", "longitude", "description"]

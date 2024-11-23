@@ -5,12 +5,16 @@ from .models import CustomUser
 
 
 class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.CharField(label="Username or Email", max_length=255)
+    username = forms.CharField(label="Username or Email")
 
 
-class SignUpForm(UserCreationForm):
-    usable_password = None
-
+class CustomUserRegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "email", "password1", "password2")
+        fields = ["username", "email", "first_name", "last_name"]
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserRegisterForm, self).__init__(*args, **kwargs)
+        # 不要なフィールドを削除
+        if "usable_password" in self.fields:
+            del self.fields["usable_password"]

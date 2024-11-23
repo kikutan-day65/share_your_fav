@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
-    "home.apps.HomeConfig",
     "location.apps.LocationConfig",
 ]
 
@@ -62,9 +61,7 @@ ROOT_URLCONF = "share_your_fav.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "templates"
-        ],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -90,31 +87,19 @@ DATABASES = {
     }
 }
 
-
-# Custom User Model
-# Enable to use custom user model
-AUTH_USER_MODEL = "accounts.CustomUser"
-
-# Custom Backend
-# Enable to login with username or email
-AUTHENTICATION_BACKENDS = [
-    "accounts.auth_backends.UsernameOrEmailBackend",
-]
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
@@ -126,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Tokyo"
 
 USE_I18N = True
 
@@ -145,3 +130,14 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Custom user model
+AUTH_USER_MODEL = "accounts.CustomUser"
+
+# Login with username/email and password
+AUTHENTICATION_BACKENDS = [
+    "accounts.auth_backends.UsernameOrEmailBackend",
+]
+
+LOGIN_URL = "accounts:user_login"

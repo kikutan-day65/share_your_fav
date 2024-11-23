@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+{% block map_features %}
+{% include 'location/map-sidebar.html' %}
+{% include 'location/map-popup.html' %}
+{% endblock map_features %}
 
-<!-- This sidebar shows up when pin is dropped -->
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" id="closeSidebarButton">&times;</a>
-    <div id="sidebarContent"></div>
-</div>
-
+{% block content%}
 <div id="map"></div>
 
-<script type="module" src="{% static 'location/js/main.js' %}" defer></script>
-{{ locations|json_script:"locations-data" }}
-{{ data_url|json_script:"data-url" }}
+{{ locations_data|json_script:"locations-data" }}
+{{ location_urls|json_script:"location-urls" }}
 
-{% endblock content %}
+<ul>
+    {% for location in locations %}
+    <li>{{ location.name}}: {{ location.description }}</li>
+    {% endfor %}
+</ul>
+{% endblock content%}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if location.user == request.user %}
+<p>
+    <a class="link-opacity-10" href="{% url 'location:location_update_form' location.id %}">Update</a>
+</p>
+<p>
+    <a class="link-opacity-10" href="{% url 'location:location_delete' object.id %}">Delete</a>
+</p>
+{% endif %}
+{{ location.name }}
+<hr>
+{{ location.description }}
+<hr>
+{{ location.created_at }}
+<hr>
+{{ location.updated_at }}
+<hr>
+{{ location.user }}
+<hr>
+
+
+{% endblock content %}

@@ -1,17 +1,17 @@
-import LeafletMap from "./map.js";
+import { MapManager } from "./map.js";
 
-const locationsData = JSON.parse(
+const mapController = new MapManager(35.466, 139.6221, 13);
+
+// locations-dataスクリプトタグからlocationデータを取得
+const locationsDataString = JSON.parse(
     document.getElementById("locations-data").textContent
 );
 
-const locationDataUrl = JSON.parse(
-    document.getElementById("data-url").textContent
+// 全URLを取得
+const locationUrls = JSON.parse(
+    document.getElementById("location-urls").textContent
 );
+const locationsData = JSON.parse(locationsDataString);
+mapController.showMarkers(locationsData);
 
-var mapInstance = new LeafletMap("map", 35.4437, 139.638, 13, locationDataUrl);
-mapInstance.initializeMap(locationsData);
-
-// Call the closeSidebar function when x button is clicked in the sidebar
-document.getElementById("closeSidebarButton").addEventListener("click", () => {
-    mapInstance.closeSidebar();
-});
+mapController.addMarkers()
