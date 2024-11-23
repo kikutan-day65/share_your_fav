@@ -40,65 +40,28 @@ class MapManager {
         this.map.on("click", (e) => {
             const { lat, lng } = e.latlng;
 
-            // 既存のマーカーを削除
+            // 既存のマーカーがあれば削除
             if (currentMarker) {
                 this.map.removeLayer(currentMarker);
             }
 
             // 新しいマーカーを追加
-            currentMarker = new L.marker([lat, lng]).addTo(this.map);
+            currentMarker = L.marker([lat, lng]).addTo(this.map);
 
-            // カスタムポップアップを作成する関数
-            const showPopup = () => {
-                // 既存のカスタムポップアップを削除
-                if (this.customPopup) {
-                    this.customPopup.removeFrom(this.map);
-                    this.customPopup = null; // ポップアップ参照をクリア
-                }
+            // 通常のポップアップを作成
+            const popupContent = `
+                <b>Marker at:</b><br>
+                Latitude: ${lat}<br>
+                Longitude: ${lng}
+            `;
+            currentMarker.bindPopup(popupContent);
 
-                // ポップアップ用のHTML要素を生成または再利用
-                const placeholderId = `popup-${Date.now()}`; // 固有IDを生成
-                let placeholder = document.getElementById(placeholderId);
-                if (!placeholder) {
-                    placeholder = document.createElement("div");
-                    placeholder.id = placeholderId;
-                    document.body.appendChild(placeholder);
-                }
-
-                // 新しいカスタムポップアップを作成
-                this.customPopup = custompopup(placeholderId, {
-                    closeButton: true,
-                    position: "left",
-                    autoPan: true,
-                });
-
-                // ポップアップが閉じられた際の処理を追加
-                this.customPopup.on("close", () => {
-                    this.customPopup = null; // ポップアップ参照をクリア
-                });
-
-                // ポップアップに内容を設定
-                this.customPopup.setContent(`
-                    <b>Marker at:</b><br>
-                    Latitude: ${lat}<br>
-                    Longitude: ${lng}
-                `);
-
-                // マップにポップアップを追加して表示
-                this.customPopup.addTo(this.map);
-                this.customPopup.show();
-            };
-
-            // マーカー追加直後にポップアップを表示
-            showPopup();
+            // マーカーを追加した直後にポップアップを表示
+            currentMarker.openPopup(); // これでポップアップを即座に表示
 
             // マーカークリック時にもポップアップを表示
             currentMarker.on("click", () => {
-                if (!this.customPopup) {
-                    showPopup();
-                } else {
-                    this.customPopup.show();
-                }
+                currentMarker.openPopup();
             });
         });
     }
@@ -113,38 +76,17 @@ class MapManager {
                 location.fields.longitude,
             ]).addTo(this.map);
 
-            // マーカークリック時にカスタムポップアップを作成
+            // 通常のポップアップを一度だけ設定
+            const popupContent = `
+                <b>${location.fields.name}</b><br>
+                ${location.fields.description}
+            `;
+            marker.bindPopup(popupContent);
+
+            // マーカークリック時にポップアップを表示
             marker.on("click", () => {
-                // 既存のポップアップを削除する場合
-                if (this.customPopup) {
-                    this.customPopup.removeFrom(this.map);
-                }
-
-                // 新しい`placeholder`を動的に作成
-                const placeholderId = `popup-${i}`;
-                let placeholder = document.getElementById(placeholderId);
-                if (!placeholder) {
-                    placeholder = document.createElement("div");
-                    placeholder.id = placeholderId;
-                    document.body.appendChild(placeholder);
-                }
-
-                // 新しいポップアップを作成
-                this.customPopup = custompopup(placeholderId, {
-                    closeButton: true,
-                    position: "left",
-                    autoPan: true,
-                });
-
-                // ポップアップに内容を設定
-                this.customPopup.setContent(`
-                    <b>${location.fields.name}</b><br>
-                    ${location.fields.description}
-                `);
-
-                // ポップアップをマップに追加して表示
-                this.customPopup.addTo(this.map);
-                this.customPopup.show();
+                // 通常のポップアップを表示
+                marker.openPopup();
             });
         }
     }
