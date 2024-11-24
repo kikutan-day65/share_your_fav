@@ -1,3 +1,8 @@
 #map {
     height: 600px;
 }
+
+.leaflet-popup-content-wrapper {
+    max-height: 300px; /* 必要な高さに調整 */
+    overflow-y: auto; /* 縦方向のスクロールを有効化 */
+}
