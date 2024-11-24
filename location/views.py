@@ -33,7 +33,7 @@ class MapView(TemplateView):
         urlpatterns = url_obj.urlpatterns
         for url_pattern in urlpatterns:
             if hasattr(url_pattern, "name"):
-                app_url[url_pattern.name] = str(url_pattern.pattern)
+                app_url[url_pattern.name] = "/location/" + str(url_pattern.pattern)
         context["location_urls"] = app_url
 
         return context
