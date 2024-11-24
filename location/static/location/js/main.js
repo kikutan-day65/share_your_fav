@@ -14,4 +14,4 @@ const locationUrls = JSON.parse(
 
 const locationsData = JSON.parse(locationsDataString);
 mapController.showMarkers(locationsData, locationUrls.detail);
-mapController.addMarkers()
+mapController.addMarkers(locationUrls.create_form);

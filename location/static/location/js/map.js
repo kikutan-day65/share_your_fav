@@ -31,11 +31,13 @@ class MapManager {
         });
     }
 
-    addMarkers() {
+    addMarkers(createFormUrl) {
         let currentMarker = null;
 
         this.map.on("click", (e) => {
             const { lat, lng } = e.latlng;
+            const createFormUrlLatlng = `${createFormUrl}?lat=${lat}&lng=${lng}`;
+
             const greenIcon = new L.Icon({
                 iconUrl:
                     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
@@ -58,11 +60,7 @@ class MapManager {
             );
 
             // 通常のポップアップを作成
-            const popupContent = `
-                <b>Marker at:</b><br>
-                Latitude: ${lat}<br>
-                Longitude: ${lng}
-            `;
+            const popupContent = `<a href="${createFormUrlLatlng}">Create a new location</a>`;
             currentMarker.bindPopup(popupContent);
 
             // マーカーを追加した直後にポップアップを表示
