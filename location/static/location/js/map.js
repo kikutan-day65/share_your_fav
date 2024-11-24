@@ -75,9 +75,13 @@ class MapManager {
         });
     }
 
-    showMarkers(locations) {
+    showMarkers(locations, detailUrl) {
         for (let i = 0; i < locations.length; i++) {
             const location = locations[i];
+            const locationDetailUrl = detailUrl.replace(
+                "<int:pk>",
+                `${location.pk}`
+            );
 
             // マーカーを作成してマップに追加
             const marker = L.marker([
@@ -88,7 +92,8 @@ class MapManager {
             // 通常のポップアップを一度だけ設定
             const popupContent = `
                 <b>${location.fields.name}</b><br>
-                ${location.fields.description}
+                <p>${location.fields.description}<p>
+                <a href="${locationDetailUrl}" target="_blank">View Details</a>
             `;
             marker.bindPopup(popupContent);
 
