@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Create New Location</h2>
-<form action="{% url 'location:location_create_form' %}" method="POST">
+<form action="{% url 'location:create_form' %}" method="POST">
     {% csrf_token %}
 
     <div>

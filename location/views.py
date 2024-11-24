@@ -3,8 +3,7 @@ from typing import List
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.shortcuts import render
-from django.urls import URLPattern, get_resolver, reverse, reverse_lazy
-from django.urls.exceptions import NoReverseMatch
+from django.urls import URLPattern, get_resolver, reverse_lazy
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -34,7 +33,7 @@ class MapView(TemplateView):
         urlpatterns = url_obj.urlpatterns
         for url_pattern in urlpatterns:
             if hasattr(url_pattern, "name"):
-                app_url[url_pattern.name] = str(url_pattern.pattern)
+                app_url[url_pattern.name] = "/location/" + str(url_pattern.pattern)
         context["location_urls"] = app_url
 
         return context
@@ -47,7 +46,7 @@ class MapView(TemplateView):
 
 class LocationCreateView(LoginRequiredMixin, CreateView):
     form_class = LocationForm
-    template_name = "location/location_create_form.html"
+    template_name = "location/create_form.html"
     success_url = reverse_lazy("location:map")
 
     def get_initial(self):
@@ -67,17 +66,17 @@ class LocationCreateView(LoginRequiredMixin, CreateView):
 
 
 class LocationDetailView(DetailView):
-    template_name = "location/location_detail.html"
+    template_name = "location/detail.html"
     model = Location
 
 
 class LocationUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = "location/location_update_form.html"
+    template_name = "location/update_form.html"
     model = Location
     fields = ["name", "description"]
 
     def get_success_url(self):
-        return reverse_lazy("location:location_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("location:detail", kwargs={"pk": self.object.pk})
 
 
 class LocationDeleteView(LoginRequiredMixin, DeleteView):

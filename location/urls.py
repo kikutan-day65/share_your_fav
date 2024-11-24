@@ -12,23 +12,23 @@ app_name = "location"
 urlpatterns = [
     path("map/", MapView.as_view(), name="map"),
     path(
-        "location-create-form/",
+        "create-form/",
         LocationCreateView.as_view(),
-        name="location_create_form",
+        name="create_form",
     ),
     path(
-        "location-detail/<int:pk>/",
+        "<int:pk>/detail/",
         LocationDetailView.as_view(),
-        name="location_detail",
+        name="detail",
     ),
     path(
-        "location-update-form/<int:pk>/",
+        "<int:pk>/update-form/",
         LocationUpdateView.as_view(),
-        name="location_update_form",
+        name="update_form",
     ),
     path(
-        "location-delete/<int:pk>/",
+        "<int:pk>/delete/",
         LocationDeleteView.as_view(),
-        name="location_delete",
+        name="delete",
     ),
 ]

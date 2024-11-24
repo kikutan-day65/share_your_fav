@@ -5,7 +5,7 @@
 <p>
     Are you sure you want to delete "{{ object }}"?
 </p>
-<form action="{% url 'location:location_delete' object.id %}" method="POST">
+<form action="{% url 'location:delete' object.id %}" method="POST">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">
         Delete

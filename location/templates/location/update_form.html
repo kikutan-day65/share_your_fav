@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form action="{% url 'location:location_update_form' location.id %}" method="POST">
+<form action="{% url 'location:update_form' location.id %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Update</button>
