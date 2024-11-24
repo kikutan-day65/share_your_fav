@@ -1,6 +1,3 @@
-import createCustomPopupControl from "./map-popup.js";
-const { CustomPopup, custompopup } = createCustomPopupControl();
-
 class MapManager {
     constructor(initLatitude, initLongitude, zoomLevel = 13) {
         this.map = L.map("map").setView(
