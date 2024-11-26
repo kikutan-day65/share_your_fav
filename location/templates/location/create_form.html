@@ -5,20 +5,26 @@
     {% csrf_token %}
 
     <div>
-        <label for="id_name">Location Name:</label>
+        <label for="id_name">Name:</label>
         {{ form.name }}
     </div>
 
     <div>
         <label for="id_latitude">Latitude:</label>
-        <input type="text" name="latitude" id="id_latitude" value="{{ form.latitude.value|default:'' }}">
+        {{ form.latitude }}
     </div>
 
     <div>
         <label for="id_longitude">Longitude:</label>
-        <input type="text" name="longitude" id="id_longitude" value="{{ form.longitude.value|default:'' }}">
+        {{ form.longitude }}
+    </div>
+
+    <div>
+        <label for="id_description">Description:</label>
+        {{ form.description }}
     </div>
 
     <button type="submit">Create</button>
 </form>
+
 {% endblock content %}
