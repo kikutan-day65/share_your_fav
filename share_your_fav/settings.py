@@ -141,3 +141,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = "accounts:user_login"
+
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
