@@ -62,7 +62,21 @@ class LocationCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        location = form.save()
+
+        photo_form = PhotoForm(self.request.POST, self.request.FILES)
+        if photo_form.is_valid():
+            photo = photo_form.save(commit=False)
+            photo.user = self.request.user
+            photo.location = location
+            photo.save()
+
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["photo_form"] = PhotoForm()
+        return context
 
 
 class LocationDetailView(DetailView):
