@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Create New Location</h2>
-<form action="{% url 'location:create_form' %}" method="POST">
+<form action="{% url 'location:create_form' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div>
@@ -22,6 +22,11 @@
     <div>
         <label for="id_description">Description:</label>
         {{ form.description }}
+    </div>
+
+    <div>
+        <label for="id_photo">Photo:</label>
+        {{ photo_form.photo }}
     </div>
 
     <button type="submit">Create</button>
