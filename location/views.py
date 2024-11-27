@@ -83,6 +83,12 @@ class LocationDetailView(DetailView):
     template_name = "location/detail.html"
     model = Location
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        location = self.object
+        context["photos"] = location.photos.all()
+        return context
+
 
 class LocationUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "location/update_form.html"
