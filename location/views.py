@@ -12,7 +12,7 @@ from django.views.generic import (
     UpdateView,
 )
 
-from .forms import LocationForm
+from .forms import LocationForm, PhotoForm
 from .models import Location
 
 
