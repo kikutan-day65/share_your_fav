@@ -21,5 +21,9 @@
 {{ location.user }}
 <hr>
 
+{% for photo in photos %}
+<img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
+{% endfor %}
+
 
 {% endblock content %}
