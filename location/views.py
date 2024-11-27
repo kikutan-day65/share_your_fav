@@ -51,8 +51,8 @@ class LocationCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        lat = self.request.GET.get("lat", "")
-        lng = self.request.GET.get("lng", "")
+        lat = self.request.GET.get("lat")
+        lng = self.request.GET.get("lng")
 
         if lat and lng:
             initial["latitude"] = lat
