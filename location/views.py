@@ -98,6 +98,21 @@ class LocationUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy("location:detail", kwargs={"pk": self.object.pk})
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["photo_form"] = PhotoForm()
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        photo_form = PhotoForm(self.request.POST, self.request.FILES)
+        if photo_form.is_valid():
+            photo = photo_form.save(commit=False)
+            photo.user = self.request.user
+            photo.location = self.object
+            photo.save()
+        return response
+
 
 class LocationDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "delete_confirmation.html"
