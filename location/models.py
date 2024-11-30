@@ -19,7 +19,16 @@ class Location(models.Model):
         return str(self.name)
 
 
-def photo_upload_to(instance, filename):
+def photo_upload_to(instance: Location, filename: str) -> str:
+    """アップロードされたphotoの保存先パスの生成
+
+    Args:
+        instance (Location): Locationオブジェクト
+        filename (str): アップロードされたファイル名
+
+    Returns:
+        str: 保存先のパス
+    """
     extension = filename.split(".")[-1]
     unique_filename = f"{uuid.uuid4()}.{extension}"
     if instance.location:
