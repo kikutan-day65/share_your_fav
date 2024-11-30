@@ -22,12 +22,16 @@ class MapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # 全てのLocationオブジェクト（HTML用）
+        context["locations"] = Location.objects.all()
+
+        # 全てのLocationオブジェクトのJSON（js用）
         context["locations_data"] = serializers.serialize(
             "json", Location.objects.all()
         )
-        context["locations"] = Location.objects.all()
 
-        # locationアプリのurlオブジェクトを取得
+        # locationアプリのURL
         app_url = {}
         url_obj = self.get_patterns("location")
         urlpatterns = url_obj.urlpatterns
@@ -39,6 +43,14 @@ class MapView(TemplateView):
         return context
 
     def get_patterns(self, app: str) -> List[URLPattern]:
+        """locationアプリのURLパターンを取得
+
+        Args:
+            app (str): アプリ名
+
+        Returns:
+            List[URLPattern]: アプリのURLパターンのリスト
+        """
         for pattern in get_resolver().url_patterns:
             if getattr(pattern, "app_name", "") == app:
                 return pattern.urlconf_name
