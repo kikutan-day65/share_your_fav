@@ -2,8 +2,9 @@ from typing import List
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import URLPattern, get_resolver, reverse_lazy
+from django.views import View
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -13,7 +14,7 @@ from django.views.generic import (
 )
 
 from .forms import LocationForm, PhotoForm
-from .models import Location
+from .models import Like, Location
 
 
 # Create your views here.
@@ -98,6 +99,12 @@ class LocationDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         location = self.object
+
+        user = self.request.user
+        context["already_liked"] = Like.objects.filter(
+            user=user, location=location
+        ).exists()
+
         context["photos"] = location.photos.all()
         return context
 
