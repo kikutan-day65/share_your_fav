@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    LikeView,
     LocationCreateView,
     LocationDeleteView,
     LocationDetailView,
@@ -31,4 +32,5 @@ urlpatterns = [
         LocationDeleteView.as_view(),
         name="delete",
     ),
+    path("<int:pk>/like/", LikeView.as_view(), name="like"),
 ]
