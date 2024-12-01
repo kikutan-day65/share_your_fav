@@ -11,6 +11,7 @@ class Location(models.Model):
     latitude = models.FloatField(unique=True)
     longitude = models.FloatField(unique=True)
     description = models.TextField(blank=True)
+    likes_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -48,3 +49,17 @@ class Photo(models.Model):
 
     def __str__(self):
         return str(self.photo)
+
+
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        "Location", related_name="location_likes", on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "location")
+
+    def __str__(self):
+        return f"{str(self.user)} - {str(self.location)}"
