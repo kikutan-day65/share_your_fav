@@ -20,6 +20,18 @@
 <hr>
 {{ location.user }}
 <hr>
+{{ location.likes_count }}
+<hr>
+
+<form action="{% url 'location:like' object.id %}" method="POST">
+    {% csrf_token %}
+
+    {% if not already_liked %}
+    <button type="submit">Like</button>
+    {% else %}
+    <button type="submit">Unlike</button>
+    {% endif %}
+</form>
 
 {% for photo in photos %}
 <img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
