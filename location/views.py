@@ -130,3 +130,21 @@ class LocationDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "delete_confirmation.html"
     model = Location
     success_url = reverse_lazy("location:map")
+
+
+class LikeView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        user = self.request.user
+        location = Location.objects.get(pk=pk)
+
+        like_exists = Like.objects.filter(user=user, location=location).exists()
+        if not like_exists:
+            Like.objects.create(user=user, location=location)
+            location.likes_count += 1
+        else:
+            Like.objects.filter(user=user, location=location).delete()
+            location.likes_count -= 1
+
+        location.save()
+
+        return redirect("location:detail", pk=location.pk)
