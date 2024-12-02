@@ -11,9 +11,22 @@
 {{ locations_data|json_script:"locations-data" }}
 {{ location_urls|json_script:"location-urls" }}
 
-<ul>
-    {% for location in locations %}
-    <li>{{ location.name}}: {{ location.description }}</li>
-    {% endfor %}
-</ul>
+<div class="container d-flex justify-content-center mt-5">
+    <div class="ranking" style="max-width: 600px;">
+        <h1 class="text-center mb-4">Ranking</h1>
+        <ul class="text-start p-0">
+            {% for location in locations %}
+            {% if forloop.counter <= 10 %}
+            <li class="mb-3" style="list-style: none;">
+                <span class="me-2 fw-bold">{{ forloop.counter }}.</span>
+                <a href="{% url 'location:detail' location.id %}" class="text-decoration-none">
+                    {{ location.name }}
+                </a>
+                <span class="ms-3 text-muted">Likes: {{ location.likes_count }}</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock content%}
