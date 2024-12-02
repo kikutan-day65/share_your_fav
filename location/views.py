@@ -25,7 +25,7 @@ class MapView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         # 全てのLocationオブジェクト（HTML用）
-        context["locations"] = Location.objects.all()
+        context["locations"] = Location.objects.order_by("-likes_count")
 
         # 全てのLocationオブジェクトのJSON（js用）
         context["locations_data"] = serializers.serialize(
