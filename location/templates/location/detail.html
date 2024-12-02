@@ -17,7 +17,9 @@
 {{ location.updated_at }}
 <hr>
 Created by: {{ location.user }}
+<hr>
 
+{% if request.user.is_authenticated %}
 <form action="{% url 'location:like' object.id %}" method="POST">
     {% csrf_token %}
 
@@ -27,6 +29,10 @@ Created by: {{ location.user }}
     <button type="submit">Unlike</button>
     {% endif %}
 </form>
+{% else %}
+<p>Please <a href="{% url 'accounts:user_login' %}">login</a> to add like</p>
+{% endif %}
+
 
 {% for photo in photos %}
 <img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
