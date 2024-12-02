@@ -2,26 +2,21 @@
 
 {% block content %}
 
+<h1>{{ location.name }}</h1>
 {% if location.user == request.user %}
-<p>
-    <a href="{% url 'location:update_form' location.id %}">Update</a>
-</p>
-<p>
-    <a href="{% url 'location:delete' object.id %}">Delete</a>
-</p>
+<a href="{% url 'location:update_form' location.id %}">Update</a>
+<a href="{% url 'location:delete' object.id %}">Delete</a>
 {% endif %}
-{{ location.name }}
 <hr>
 {{ location.description }}
+<hr>
+{{ location.likes_count }} Likes
 <hr>
 {{ location.created_at }}
 <hr>
 {{ location.updated_at }}
 <hr>
-{{ location.user }}
-<hr>
-{{ location.likes_count }}
-<hr>
+Created by: {{ location.user }}
 
 <form action="{% url 'location:like' object.id %}" method="POST">
     {% csrf_token %}
