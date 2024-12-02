@@ -101,9 +101,12 @@ class LocationDetailView(DetailView):
         location = self.object
 
         user = self.request.user
-        context["already_liked"] = Like.objects.filter(
-            user=user, location=location
-        ).exists()
+        if user.is_authenticated:
+            context["already_liked"] = Like.objects.filter(
+                user=user, location=location
+            ).exists()
+        else:
+            context["already_liked"] = False
 
         context["photos"] = location.photos.all()
         return context
