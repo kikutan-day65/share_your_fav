@@ -91,6 +91,7 @@ class MapManager {
             const popupContent = `
                 <b>${location.fields.name}</b><br>
                 <p>${location.fields.description}<p>
+                <p>Likes: ${location.fields.likes_count}</p>
                 <a href="${locationDetailUrl}" target="_blank">View Details</a>
             `;
             marker.bindPopup(popupContent);
