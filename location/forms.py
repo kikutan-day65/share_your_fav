@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Location, Photo
+from .models import Comment, Location, Photo
 
 
 class LocationForm(forms.ModelForm):
@@ -13,3 +13,9 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
         fields = ["photo"]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["comment"]
