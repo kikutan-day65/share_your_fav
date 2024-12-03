@@ -63,3 +63,15 @@ class Like(models.Model):
 
     def __str__(self):
         return f"{str(self.user)} - {str(self.location)}"
+
+
+class Comment(models.Model):
+    comment = models.TextField(blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        "Location", related_name="location_comment", on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.comment)
