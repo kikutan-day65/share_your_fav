@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    CommentFormView,
     LikeView,
     LocationCreateView,
     LocationDeleteView,
@@ -33,4 +34,5 @@ urlpatterns = [
         name="delete",
     ),
     path("<int:pk>/like/", LikeView.as_view(), name="like"),
+    path("<int:pk>/comment-form/", CommentFormView.as_view(), name="comment_form"),
 ]

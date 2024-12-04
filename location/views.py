@@ -13,8 +13,8 @@ from django.views.generic import (
     UpdateView,
 )
 
-from .forms import LocationForm, PhotoForm
-from .models import Like, Location
+from .forms import CommentForm, LocationForm, PhotoForm
+from .models import Comment, Like, Location
 
 
 # Create your views here.
@@ -109,6 +109,7 @@ class LocationDetailView(DetailView):
             context["already_liked"] = False
 
         context["photos"] = location.photos.all()
+        context["comment_form"] = CommentForm()
         return context
 
 
@@ -158,3 +159,15 @@ class LikeView(LoginRequiredMixin, View):
         location.save()
 
         return redirect("location:detail", pk=location.pk)
+
+
+class CommentFormView(LoginRequiredMixin, CreateView):
+    form_class = CommentForm
+    template_name = "location/comment_form.html"
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.user = self.request.user
+        comment.location_id = self.kwargs["pk"]
+        comment.save()
+        return redirect("location:detail", pk=self.kwargs["pk"])

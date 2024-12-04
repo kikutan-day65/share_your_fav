@@ -38,5 +38,12 @@ Created by: {{ location.user }}
 <img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
 {% endfor %}
 
+<div class="comment-form">
+    {% include 'location/comment_form.html' %}
+</div>
+
+<div class="comments">
+    {{  location.comments.all }}
+</div>
 
 {% endblock content %}

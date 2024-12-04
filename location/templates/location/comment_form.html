@@ -1,0 +1,5 @@
+<form action="{% url 'location:comment_form' location.id %}" method="POST">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Add Comment</button>
+</form>
