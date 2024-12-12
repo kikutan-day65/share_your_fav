@@ -54,7 +54,7 @@ class Photo(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     location = models.ForeignKey(
-        "Location", related_name="location_likes", on_delete=models.CASCADE
+        "Location", related_name="likes", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -69,7 +69,7 @@ class Comment(models.Model):
     comment = models.TextField(blank=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     location = models.ForeignKey(
-        "Location", related_name="location_comment", on_delete=models.CASCADE
+        "Location", related_name="comments", on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

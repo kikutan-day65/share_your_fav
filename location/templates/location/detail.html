@@ -4,8 +4,8 @@
 
 <h1>{{ location.name }}</h1>
 {% if location.user == request.user %}
-<a href="{% url 'location:update_form' location.id %}">Update</a>
-<a href="{% url 'location:delete' object.id %}">Delete</a>
+<a href="{% url 'location:update_form' location.pk %}">Update</a>
+<a href="{% url 'location:delete' location.pk %}">Delete</a>
 {% endif %}
 <hr>
 {{ location.description }}
@@ -20,7 +20,7 @@ Created by: {{ location.user }}
 <hr>
 
 {% if request.user.is_authenticated %}
-<form action="{% url 'location:like' object.id %}" method="POST">
+<form action="{% url 'location:like' location.pk %}" method="POST">
     {% csrf_token %}
 
     {% if not already_liked %}
@@ -33,17 +33,11 @@ Created by: {{ location.user }}
 <p>Please <a href="{% url 'accounts:user_login' %}">login</a> to add like</p>
 {% endif %}
 
-
+{% if photos %}
 {% for photo in photos %}
-<img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
-{% endfor %}
-
-<div class="comment-form">
-    {% include 'location/comment_form.html' %}
-</div>
-
-<div class="comments">
-    {{  location.comments.all }}
-</div>
-
+    <img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
+    {% endfor %}
+{% else %}
+No photos uploaded...
+{% endif %}
 {% endblock content %}
