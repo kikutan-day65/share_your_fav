@@ -14,7 +14,7 @@ from django.views.generic import (
 )
 
 from .forms import CommentForm, LocationForm, PhotoForm
-from .models import Comment, Like, Location
+from .models import Like, Location
 
 
 # Create your views here.
@@ -102,14 +102,11 @@ class LocationDetailView(DetailView):
 
         user = self.request.user
         if user.is_authenticated:
-            context["already_liked"] = Like.objects.filter(
-                user=user, location=location
-            ).exists()
+            context["already_liked"] = location.likes.filter(user=user).exists()
         else:
             context["already_liked"] = False
 
         context["photos"] = location.photos.all()
-        context["comment_form"] = CommentForm()
         return context
 
 
@@ -128,12 +125,13 @@ class LocationUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        photo_form = PhotoForm(self.request.POST, self.request.FILES)
-        if photo_form.is_valid():
-            photo = photo_form.save(commit=False)
-            photo.user = self.request.user
-            photo.location = self.object
-            photo.save()
+        if self.request.POST and self.request.FILES:
+            photo_form = PhotoForm(self.request.POST, self.request.FILES)
+            if photo_form.is_valid():
+                photo = photo_form.save(commit=False)
+                photo.user = self.request.user
+                photo.location = self.object
+                photo.save()
         return response
 
 
@@ -158,16 +156,4 @@ class LikeView(LoginRequiredMixin, View):
 
         location.save()
 
-        return redirect("location:detail", pk=location.pk)
-
-
-class CommentFormView(LoginRequiredMixin, CreateView):
-    form_class = CommentForm
-    template_name = "location/comment_form.html"
-
-    def form_valid(self, form):
-        comment = form.save(commit=False)
-        comment.user = self.request.user
-        comment.location_id = self.kwargs["pk"]
-        comment.save()
-        return redirect("location:detail", pk=self.kwargs["pk"])
+        return redirect("location:detail", pk=pk)

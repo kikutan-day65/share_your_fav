@@ -19,7 +19,7 @@
             {% if forloop.counter <= 10 %}
             <li class="mb-3" style="list-style: none;">
                 <span class="me-2 fw-bold">{{ forloop.counter }}.</span>
-                <a href="{% url 'location:detail' location.id %}" class="text-decoration-none">
+                <a href="{% url 'location:detail' location.pk %}" class="text-decoration-none">
                     {{ location.name }}
                 </a>
                 <span class="ms-3 text-muted">Likes: {{ location.likes_count }}</span>
