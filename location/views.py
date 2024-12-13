@@ -17,7 +17,6 @@ from .forms import CommentForm, LocationForm, PhotoForm
 from .models import Like, Location
 
 
-# Create your views here.
 class MapView(TemplateView):
     template_name = "location/map.html"
 
@@ -107,6 +106,7 @@ class LocationDetailView(DetailView):
             context["already_liked"] = False
 
         context["photos"] = location.photos.all()
+        context["comment_form"] = CommentForm()
         return context
 
 
@@ -157,3 +157,17 @@ class LikeView(LoginRequiredMixin, View):
         location.save()
 
         return redirect("location:detail", pk=pk)
+
+
+class CommentFormView(LoginRequiredMixin, CreateView):
+    """detail.html内コメントフォームからのPOSTリクエスト処理"""
+    form_class = CommentForm
+    template_name = "location/detail.html"
+
+    def get_success_url(self):
+        return reverse_lazy("location:detail", kwargs={"pk": self.kwargs["pk"]})
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.location = Location.objects.get(pk=self.kwargs["pk"])
+        return super().form_valid(form)
