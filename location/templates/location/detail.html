@@ -40,4 +40,24 @@ Created by: {{ location.user }}
 {% else %}
 No photos uploaded...
 {% endif %}
+
+{% if user.is_authenticated %}
+<form action="{% url 'location:comment_form' location.pk %}" method="post">
+    {% csrf_token %}
+    {{ comment_form }}
+    <button type="submit">Add comment</button>
+</form>
+{% endif %}
+
+
+<h4>Comments</h4>
+    
+{% if location.comments.all %}
+{% for comment in location.comments.all %}
+{{ comment.comment }} - {{ comment.user }} - {{ comment.created_at }}<hr>
+{% endfor %}
+{% else %}
+No Comments...
+{% endif %}
+
 {% endblock content %}
