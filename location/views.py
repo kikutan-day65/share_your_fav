@@ -72,18 +72,18 @@ class LocationCreateView(LoginRequiredMixin, CreateView):
 
         return initial
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        location = form.save()
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     location = form.save()
 
-        photo_form = PhotoForm(self.request.POST, self.request.FILES)
-        if photo_form.is_valid():
-            photo = photo_form.save(commit=False)
-            photo.user = self.request.user
-            photo.location = location
-            photo.save()
+    #     photo_form = PhotoForm(self.request.POST, self.request.FILES)
+    #     if photo_form.is_valid():
+    #         photo = photo_form.save(commit=False)
+    #         photo.user = self.request.user
+    #         photo.location = location
+    #         photo.save()
 
-        return super().form_valid(form)
+    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -107,6 +107,7 @@ class LocationDetailView(DetailView):
 
         context["photos"] = location.photos.all()
         context["comment_form"] = CommentForm()
+        context["photo_form"] = PhotoForm()
         return context
 
 
@@ -123,22 +124,45 @@ class LocationUpdateView(LoginRequiredMixin, UpdateView):
         context["photo_form"] = PhotoForm()
         return context
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if self.request.POST and self.request.FILES:
-            photo_form = PhotoForm(self.request.POST, self.request.FILES)
-            if photo_form.is_valid():
-                photo = photo_form.save(commit=False)
-                photo.user = self.request.user
-                photo.location = self.object
-                photo.save()
-        return response
+    # def form_valid(self, form):
+    #     response = super().form_valid(form)
+    #     if self.request.POST and self.request.FILES:
+    #         photo_form = PhotoForm(self.request.POST, self.request.FILES)
+    #         if photo_form.is_valid():
+    #             photo = photo_form.save(commit=False)
+    #             photo.user = self.request.user
+    #             photo.location = self.object
+    #             photo.save()
+    #     return response
 
 
 class LocationDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "delete_confirmation.html"
     model = Location
     success_url = reverse_lazy("location:map")
+
+
+class PhotoFormView(LoginRequiredMixin, CreateView):
+    """フォトフォームからのPOSTリクエスト処理"""
+
+    form_class = PhotoForm
+
+    def get_success_url(self):
+
+        return reverse_lazy("location:detail", kwargs={"pk": self.kwargs["pk"]})
+
+    def get_template_names(self):
+        """リクエストが送信されてきたURLによって動的にテンプレートを決定"""
+        if self.request.path.endswith("detail/"):
+            return ["location/detail.html"]
+        elif self.request.path.endswith("create-form/"):
+            return ["location/create_form.html"]
+
+    def form_valid(self, form):
+        if self.request.POST and self.request.FILES:
+            form.instance.user = self.request.user
+            form.instance.location = Location.objects.get(pk=self.kwargs["pk"])
+            return super().form_valid(form)
 
 
 class LikeView(LoginRequiredMixin, View):
@@ -161,6 +185,7 @@ class LikeView(LoginRequiredMixin, View):
 
 class CommentFormView(LoginRequiredMixin, CreateView):
     """detail.html内コメントフォームからのPOSTリクエスト処理"""
+
     form_class = CommentForm
     template_name = "location/detail.html"
 

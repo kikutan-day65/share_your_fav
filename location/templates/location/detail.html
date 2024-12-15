@@ -33,6 +33,18 @@ Created by: {{ location.user }}
 <p>Please <a href="{% url 'accounts:user_login' %}">login</a> to add like</p>
 {% endif %}
 
+
+<!-- Photo Formの表示 -->
+{% if user.is_authenticated %}
+<h4>Photo</h4>
+<form action="{% url 'location:photo_form' location.pk %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ photo_form }}
+    <button type="submit">Upload</button>
+</form>
+{% endif %}
+
+<!-- Photoの表示 -->
 {% if photos %}
 {% for photo in photos %}
     <img src="{{ photo.photo.url }}" alt="Unavailable photo" width="500" height="300">
@@ -41,6 +53,9 @@ Created by: {{ location.user }}
 No photos uploaded...
 {% endif %}
 
+
+<h4>Comments</h4>    
+<!-- CommentFormの表示 -->
 {% if user.is_authenticated %}
 <form action="{% url 'location:comment_form' location.pk %}" method="post">
     {% csrf_token %}
@@ -49,9 +64,7 @@ No photos uploaded...
 </form>
 {% endif %}
 
-
-<h4>Comments</h4>
-    
+<!-- Commentの表示 -->
 {% if location.comments.all %}
 {% for comment in location.comments.all %}
 {{ comment.comment }} - {{ comment.user }} - {{ comment.created_at }}<hr>

@@ -8,6 +8,7 @@ from .views import (
     LocationDetailView,
     LocationUpdateView,
     MapView,
+    PhotoFormView,
 )
 
 app_name = "location"
@@ -31,8 +32,9 @@ urlpatterns = [
     path(
         "<int:pk>/delete/",
         LocationDeleteView.as_view(),
-        name="delete",
+        name="delete"
     ),
     path("<int:pk>/like/", LikeView.as_view(), name="like"),
     path("<int:pk>/comment-form/", CommentFormView.as_view(), name="comment_form"),
+    path("<int:pk>/photo-form/", PhotoFormView.as_view(), name="photo_form"),
 ]
